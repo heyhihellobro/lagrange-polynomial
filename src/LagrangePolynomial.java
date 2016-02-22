@@ -72,6 +72,33 @@ public class LagrangePolynomial {
             }
             result += temp * functionValuesInRoots[i];
         }
+        double temp = f(x) - result;
+        System.out.println("f(x) - Ln(x) = " + temp);
+        return result;
+    }
+
+    private static double solveNeuton(double x, double[] roots, double[] functionValuesInRoots) {
+
+        System.out.println();
+        System.out.println("============== Нахождение значения Интерполяционного многочлена Ньютона ==============");
+
+        double result = functionValuesInRoots[0], F, den;
+        int i, j, k;
+        for (i = 1; i <= n; i++) {
+            F = 0;
+            for (j = 0; j <= i; j++) {
+                den = 1;
+                for (k = 0; k <= i; k++) {
+                    if (k != j) den *= (roots[j] - roots[k]);
+                }
+                F += functionValuesInRoots[j] / den;
+            }
+            for (k = 0; k < i; k++) F *= (x - roots[k]);
+            result += F;
+        }
+
+        double temp = f(x) - result;
+        System.out.println("f(x) - Pn(x) = " + temp);
         return result;
     }
 
@@ -79,6 +106,9 @@ public class LagrangePolynomial {
     public static void main(String[] args) {
 
         findRootsAndFunctionValues(n);
-        System.out.println(solveLagrange(2, roots, functionValuesInRoots));
+        System.out.println(solveLagrange(0.5, roots, functionValuesInRoots));
+        System.out.println();
+        System.out.println(solveNeuton(0.5, roots, functionValuesInRoots));
+
     }
 }
